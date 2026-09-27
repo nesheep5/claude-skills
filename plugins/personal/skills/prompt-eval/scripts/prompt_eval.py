@@ -261,10 +261,11 @@ class Workspace:
         self.args = args
         self.out = out
         self.files = [expand(f) for f in args.file]
-        self.tmp = Path(tempfile.mkdtemp(prefix="prompt-eval-"))
+        # 被験の Claude はパスを見て評価中だと推測しうるので、一時ディレクトリには中立な名前を使う
+        self.tmp = Path(tempfile.mkdtemp())
         self.worktrees: list[tuple[Path, Path]] = []
         self.versions: dict[str, dict[str, str]] = {}  # arm -> {file: sha}
-        self.scratch_cwd = self.tmp / "scratch"
+        self.scratch_cwd = self.tmp / "work"
         self.scratch_cwd.mkdir()
 
     def ref_for(self, arm: str) -> str:
@@ -308,7 +309,8 @@ class Workspace:
         # repo モード: HEAD の worktree を腕ごとに作り、対象ファイルだけ版を上書きする。
         # worktree はリポジトリの外に置く（中に置くと上の階層の CLAUDE.md が読まれ、腕が混ざる）
         root = repo_root(self.files[0])
-        wt = self.tmp / f"wt-{arm}"
+        # 腕の名前もパスに出さない。リポジトリと同じ名前のディレクトリにする
+        wt = Path(tempfile.mkdtemp(dir=self.tmp)) / root.name
         git(root, "worktree", "add", "--detach", str(wt), "HEAD")
         self.worktrees.append((root, wt))
         for f, t in texts.items():
