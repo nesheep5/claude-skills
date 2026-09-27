@@ -1,7 +1,7 @@
 {
   "name": "personal",
-  "version": "0.1.0",
-  "description": "小さな汎用スキルの詰め合わせ（skill-improve・mermaid-to-image）",
+  "version": "0.2.0",
+  "description": "小さな汎用スキルの詰め合わせ（skill-improve・mermaid-to-image・prompt-eval）",
   "author": {
     "name": "nesheep5"
   }

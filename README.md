@@ -16,7 +16,7 @@ nesheep5 の自作 Claude Code プラグイン集（plugin marketplace）。
 | プラグイン | 中身 |
 |---|---|
 | `dev-docs` | Brief・PRD・DesignDoc・開発スケジュール・検討資料を、文書間の連鎖を保って作成・レビューする。土台の文章術（tech-writing）を含む |
-| `personal` | 小さな汎用スキルの詰め合わせ。`skill-improve`（スキルへの指摘を記録・集計して SKILL.md に反映する）、`mermaid-to-image`（Mermaid を画像にする） |
+| `personal` | 小さな汎用スキルの詰め合わせ。`skill-improve`（スキルへの指摘を記録・集計して SKILL.md に反映する）、`mermaid-to-image`（Mermaid を画像にする）、`prompt-eval`（CLAUDE.md の修正前後を claude -p で走らせ比べ、狙った変化と退行の有無を判定する） |
 
 ## 構成
 
