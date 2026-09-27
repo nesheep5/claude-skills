@@ -1,14 +1,19 @@
 #!/bin/bash
 # 公開リポジトリの pre-push。push するコミットについて次を確かめる。
 #   - gitleaks で秘密が無いこと
-#   - author・committer が GitHub の noreply アドレスであること（実名のメールを公開しない）
+#   - author・committer（注釈付きタグは tagger も）が GitHub の noreply アドレス
+#     （<ID>+<名前>@users.noreply.github.com）であること（実名のメールを公開しない）
 #   - push する HEAD の判断レビューの記録（.git/publish-review/<sha>、中身あり）があること。
+#     worktree から push するときも、メインの .git（git-common-dir）の記録を見る。
 #     記録は、差分を読んで会社・個人・非公開の情報が無いと判断したときに書く（手順は CLAUDE.md）。
 #     人が自分で確かめて push するときは PUBLISH_REVIEWED=1 で記録を省ける（作者の検査は省けない）
 cd "$(git rev-parse --show-toplevel)" || exit 1
 fail() { printf 'pre-push: %b\n' "$1" >&2; exit 1; }
 command -v gitleaks >/dev/null || fail "gitleaks が無い（brew install gitleaks）"
-gitdir=$(git rev-parse --git-dir)
+# worktree では --git-dir が .git/worktrees/<名前> を指すため、記録は --git-common-dir を基準にする。
+# 相対パスで返ることがあるので、上の cd の後で絶対パスにしておく
+gitdir=$(cd "$(git rev-parse --git-common-dir)" && pwd) || fail "git-common-dir を解決できない"
+noreply='^[0-9]+\+[^@]+@users\.noreply\.github\.com$'
 z=0000000000000000000000000000000000000000
 while read -r lref lsha rref rsha; do
   [ "$lsha" = "$z" ] && continue
@@ -16,17 +21,15 @@ while read -r lref lsha rref rsha; do
   if [ "$rsha" = "$z" ] || ! git cat-file -e "$rsha^{commit}" 2>/dev/null; then range="$lsha"; else range="$rsha..$lsha"; fi
   gitleaks git --log-opts="$range" --no-banner --redact -l warn >/dev/null 2>&1 || fail "gitleaks が検出した（$range）"
   log=$(git log --format='%h %ae %ce' "$range") || fail "git log が失敗した（$range）"
-  bad=$(printf '%s\n' "$log" | awk 'NF && ($2 !~ /@users\.noreply\.github\.com$/ || $3 !~ /@users\.noreply\.github\.com$/)')
+  # awk -v はバックスラッシュを解釈してしまうので、正規表現は環境変数で渡す
+  bad=$(printf '%s\n' "$log" | RE="$noreply" awk 'NF && ($2 !~ ENVIRON["RE"] || $3 !~ ENVIRON["RE"])')
   [ -z "$bad" ] || fail "author か committer が noreply アドレスでないコミットがある:\n$bad"
   # 注釈付きタグは tagger も確かめる（%ae %ce はコミットしか見ない）
   if [ "$(git cat-file -t "$lsha" 2>/dev/null)" = tag ]; then
     tagger=$(git cat-file tag "$lsha" | sed -n 's/^tagger .*<\(.*\)>.*/\1/p')
-    case "$tagger" in
-      *@users.noreply.github.com) ;;
-      *) fail "注釈付きタグ $lref の tagger が noreply アドレスでない: ${tagger:-不明}" ;;
-    esac
+    [[ "$tagger" =~ $noreply ]] || fail "注釈付きタグ $lref の tagger が noreply アドレスでない: ${tagger:-不明}"
   fi
-  if [ -z "${PUBLISH_REVIEWED:-}" ] && [ ! -s "$gitdir/publish-review/$lsha" ]; then
+  if [ "${PUBLISH_REVIEWED:-}" != 1 ] && [ ! -s "$gitdir/publish-review/$lsha" ]; then
     fail "$lsha の公開前レビューの記録が無い（手順は CLAUDE.md の「公開前レビュー」）。自分で確かめたなら PUBLISH_REVIEWED=1 を付けて push する"
   fi
 done

@@ -51,5 +51,33 @@ tsha=$(G rev-parse v1); mkdir -p "$T/r/.git/publish-review"; echo "要点: 確�
 if printf 'refs/tags/v1 %s refs/tags/v1 0000000000000000000000000000000000000000\n' "$tsha" \
     | (cd "$T/r" && bash git-hooks/pre-push) >/dev/null 2>&1; then got=pass; else got=fail; fi
 check fail "$got" "pre-push: 注釈付きタグの tagger が noreply でなければ止める"
+
+# tagger が ID の無い noreply でも止める
+G -c user.email=x@users.noreply.github.com tag -a v2 -m "release"
+tsha=$(G rev-parse v2); echo "要点: 確認済み" > "$T/r/.git/publish-review/$tsha"
+if printf 'refs/tags/v2 %s refs/tags/v2 0000000000000000000000000000000000000000\n' "$tsha" \
+    | (cd "$T/r" && bash git-hooks/pre-push) >/dev/null 2>&1; then got=pass; else got=fail; fi
+check fail "$got" "pre-push: 注釈付きタグの tagger が ID の無い noreply なら止める"
+
+# PUBLISH_REVIEWED は 1 のときだけ記録を省く
+G commit -q --amend -m "add a" --author "$NOREPLY"
+check fail "$(pp PUBLISH_REVIEWED=0)" "pre-push: PUBLISH_REVIEWED=0 では記録なしなら止める"
+check fail "$(pp PUBLISH_REVIEWED=yes)" "pre-push: PUBLISH_REVIEWED=yes では記録なしなら止める"
+
+# author・committer は <ID>+<名前>@users.noreply.github.com の形に限る
+G commit -q --amend -m "add a" --author "tester <x@users.noreply.github.com>"; review
+check fail "$(pp)" "pre-push: ID の無い noreply の author は止める"
+G -c user.email=x@users.noreply.github.com commit -q --amend -m "add a" --author "$NOREPLY"; review
+check fail "$(pp)" "pre-push: ID の無い noreply の committer は止める"
+
+# worktree から push しても、メインの .git/publish-review の記録を見つける
+G commit -q --amend -m "add a" --author "$NOREPLY"
+G worktree add -q --detach "$T/wt" HEAD
+echo "wt" > "$T/wt/b.md"; git -C "$T/wt" add b.md; git -C "$T/wt" commit -q -m "add b"
+wsha=$(git -C "$T/wt" rev-parse HEAD)
+echo "要点: 確認済み" > "$T/r/.git/publish-review/$wsha"
+if printf 'refs/heads/main %s refs/heads/main 0000000000000000000000000000000000000000\n' "$wsha" \
+    | (cd "$T/wt" && bash "$T/r/git-hooks/pre-push") >/dev/null 2>&1; then got=pass; else got=fail; fi
+check pass "$got" "pre-push: worktree からでもメインの .git の記録で通す"
 rm -rf "$T"
 exit $fail

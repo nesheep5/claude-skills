@@ -24,7 +24,7 @@ push の前に必ず行う。pre-push が記録の有無を確かめ、無けれ
 1. push する範囲を決める（初回や force push なら `main` 全体、通常は `origin/main..HEAD`）
 2. **新しいサブエージェント**に、`git log -p --format='%an <%ae>%n%B' <範囲>` の出力だけを渡し、「個人・組織・非公開のプロジェクトを特定できる情報、ローカルの環境に依存する記述が無いか」を判断させる。作業の文脈を知らない読み手の方が見落としにくい。注釈付きタグを push するときは `git cat-file tag <タグ>` の出力（tagger とメッセージ）も渡す。サブエージェントにはファイルの変更・コミット・push をさせない
 3. 指摘があれば、語を消すのではなく一般化して書き直し、1 からやり直す
-4. 問題が無ければ、`.git/publish-review/<push する HEAD の sha>` に要点を書く（何を見て、何が無かったか、指摘と直した内容）。`.git` の中なので公開されない
+4. 問題が無ければ、`.git/publish-review/<push する HEAD の sha>` に要点を書く（何を見て、何が無かったか、指摘と直した内容）。`.git` の中なので公開されない。worktree で作業しているときも、worktree 側（`.git/worktrees/<名前>`）ではなくメインの `.git`（`git rev-parse --git-common-dir`）に置く
 5. push はユーザーに確認してから行う
 
 人が自分で確かめて push するときは、`PUBLISH_REVIEWED=1 git push` で記録を省ける。gitleaks と作者の検査は省けない。
