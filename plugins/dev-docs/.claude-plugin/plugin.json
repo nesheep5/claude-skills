@@ -1,0 +1,8 @@
+{
+  "name": "dev-docs",
+  "version": "0.1.0",
+  "description": "Brief・PRD・DesignDoc・開発スケジュール・技術調査資料を、文書間の連鎖を保って作成・レビューする開発ドキュメント作成プラグイン",
+  "author": {
+    "name": "nesheep5"
+  }
+}

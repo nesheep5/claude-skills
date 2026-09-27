@@ -1,0 +1,12 @@
+#!/bin/bash
+# 公開リポジトリの pre-commit。`git config core.hooksPath git-hooks` で有効にする。
+# リポジトリ単位の hooksPath は global の hook を上書きするので、gitleaks もここで走らせる。
+# 会社・個人・非公開の情報は語のリストでは守らず、push 前の判断レビュー（pre-push）で守る
+cd "$(git rev-parse --show-toplevel)" || exit 1
+fail() { printf 'pre-commit: %b\n' "$1" >&2; exit 1; }
+command -v gitleaks >/dev/null || fail "gitleaks が無い（brew install gitleaks）"
+gitleaks git --staged --no-banner --redact -l warn >/dev/null 2>&1 || fail "gitleaks が秘匿情報らしき文字列を検出した"
+if [ -z "${SKIP_VALIDATE:-}" ] && git diff --cached --name-only | grep -qE '^(plugins/|\.claude-plugin/)'; then
+  bash tests/validate.sh >/dev/null 2>&1 || fail "claude plugin validate が失敗した（bash tests/validate.sh で詳細）"
+fi
+exit 0

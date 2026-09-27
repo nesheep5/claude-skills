@@ -1,0 +1,19 @@
+{
+  "name": "nesheep5",
+  "owner": {
+    "name": "nesheep5"
+  },
+  "metadata": {
+    "description": "nesheep5 の自作 Claude Code プラグイン集"
+  },
+  "plugins": [
+    {
+      "name": "dev-docs",
+      "source": "./plugins/dev-docs"
+    },
+    {
+      "name": "personal",
+      "source": "./plugins/personal"
+    }
+  ]
+}
