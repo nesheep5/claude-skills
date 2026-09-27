@@ -1,6 +1,6 @@
 """prompt_eval.py の決定的なテスト。偽の claude（fake_claude.py）を使い、実際の API は呼ばない。
 
-  python3 -m unittest discover -s skills/prompt-eval/tests
+  python3 -m unittest discover -s tests   （スキルのディレクトリで実行する）
 """
 import json
 import os
