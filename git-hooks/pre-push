@@ -12,10 +12,20 @@ gitdir=$(git rev-parse --git-dir)
 z=0000000000000000000000000000000000000000
 while read -r lref lsha rref rsha; do
   [ "$lsha" = "$z" ] && continue
-  if [ "$rsha" = "$z" ]; then range="$lsha"; else range="$rsha..$lsha"; fi
+  # push 先の sha が手元に無い（fetch していない force push など）ときは、push するものの履歴全体を検査する
+  if [ "$rsha" = "$z" ] || ! git cat-file -e "$rsha^{commit}" 2>/dev/null; then range="$lsha"; else range="$rsha..$lsha"; fi
   gitleaks git --log-opts="$range" --no-banner --redact -l warn >/dev/null 2>&1 || fail "gitleaks が検出した（$range）"
-  bad=$(git log --format='%h %ae %ce' "$range" | awk '$2 !~ /@users\.noreply\.github\.com$/ || $3 !~ /@users\.noreply\.github\.com$/')
+  log=$(git log --format='%h %ae %ce' "$range") || fail "git log が失敗した（$range）"
+  bad=$(printf '%s\n' "$log" | awk 'NF && ($2 !~ /@users\.noreply\.github\.com$/ || $3 !~ /@users\.noreply\.github\.com$/)')
   [ -z "$bad" ] || fail "author か committer が noreply アドレスでないコミットがある:\n$bad"
+  # 注釈付きタグは tagger も確かめる（%ae %ce はコミットしか見ない）
+  if [ "$(git cat-file -t "$lsha" 2>/dev/null)" = tag ]; then
+    tagger=$(git cat-file tag "$lsha" | sed -n 's/^tagger .*<\(.*\)>.*/\1/p')
+    case "$tagger" in
+      *@users.noreply.github.com) ;;
+      *) fail "注釈付きタグ $lref の tagger が noreply アドレスでない: ${tagger:-不明}" ;;
+    esac
+  fi
   if [ -z "${PUBLISH_REVIEWED:-}" ] && [ ! -s "$gitdir/publish-review/$lsha" ]; then
     fail "$lsha の公開前レビューの記録が無い（手順は CLAUDE.md の「公開前レビュー」）。自分で確かめたなら PUBLISH_REVIEWED=1 を付けて push する"
   fi

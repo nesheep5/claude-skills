@@ -36,5 +36,20 @@ check fail "$(pp)" "pre-push: author が noreply でなければ止める"
 G -c user.email=real@example.com commit -q --amend -m "add a" --author "$NOREPLY"; review
 check fail "$(pp)" "pre-push: committer が noreply でなければ止める"
 check fail "$(pp PUBLISH_REVIEWED=1)" "pre-push: PUBLISH_REVIEWED=1 でも作者の検査は外さない"
+
+# push 先の sha が手元に無い（fetch していない force push など）ときも、検査を素通りしない
+G -c user.email=real@example.com commit -q --amend -m "add a" --author "Real Name <real@example.com>"; review
+sha=$(G rev-parse HEAD)
+if printf 'refs/heads/main %s refs/heads/main 1111111111111111111111111111111111111111\n' "$sha" \
+    | (cd "$T/r" && bash git-hooks/pre-push) >/dev/null 2>&1; then got=pass; else got=fail; fi
+check fail "$got" "pre-push: push 先の sha が手元に無くても作者を検査する"
+
+# 注釈付きタグの tagger も noreply でなければ止める
+G commit -q --amend -m "add a" --author "$NOREPLY"
+G -c user.email=real@example.com tag -a v1 -m "release"
+tsha=$(G rev-parse v1); mkdir -p "$T/r/.git/publish-review"; echo "要点: 確認済み" > "$T/r/.git/publish-review/$tsha"
+if printf 'refs/tags/v1 %s refs/tags/v1 0000000000000000000000000000000000000000\n' "$tsha" \
+    | (cd "$T/r" && bash git-hooks/pre-push) >/dev/null 2>&1; then got=pass; else got=fail; fi
+check fail "$got" "pre-push: 注釈付きタグの tagger が noreply でなければ止める"
 rm -rf "$T"
 exit $fail
