@@ -1,5 +1,7 @@
 # claude-skills
 
+[![CI](https://github.com/nesheep5/claude-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/nesheep5/claude-skills/actions/workflows/ci.yml)
+
 nesheep5 の自作 Claude Code プラグイン集（plugin marketplace）。
 
 ## 使い方
@@ -26,6 +28,7 @@ nesheep5 の自作 Claude Code プラグイン集（plugin marketplace）。
       skills/<name>/SKILL.md
     git-hooks/                         公開前の検査（pre-commit・pre-push）
     tests/                             validate.sh・git-hooks.test.sh
+    .github/workflows/ci.yml           push と PR で tests/ と prompt-eval のテストを走らせる
 
 ## 開発
 
@@ -45,3 +48,7 @@ claude plugin marketplace add <このリポジトリのパス>
 - gitleaks による秘匿情報の検出（pre-commit・pre-push）
 - author・committer が GitHub の noreply アドレスであること（pre-push）
 - push する差分の判断レビュー（pre-push がレビューの記録を確かめる）。語のリストでは守らず、差分を読んで個人・組織・非公開の情報が無いかを判断する。手順は CLAUDE.md
+
+## ライセンス
+
+MIT（[LICENSE](LICENSE)）

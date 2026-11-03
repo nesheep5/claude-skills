@@ -4,5 +4,6 @@
   "description": "小さな汎用スキルの詰め合わせ（skill-improve・mermaid-to-image・prompt-eval）",
   "author": {
     "name": "nesheep5"
-  }
+  },
+  "license": "MIT"
 }
