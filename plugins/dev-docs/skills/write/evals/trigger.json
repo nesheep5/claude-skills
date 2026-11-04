@@ -13,11 +13,19 @@
   {"query": "このリポジトリの README が古くて、何をするツールか伝わらない。書き直して", "should_trigger": true},
   {"query": "スパイクで分かったことを、PdM が判断できる調査資料にまとめたい", "should_trigger": true},
   {"query": "障害対応の手順書を、新しく入ったメンバーが読んでも迷わないように作って", "should_trigger": true},
+  {"query": "docs/design/cache.md の設計書、TTL を 5 分から 1 分に変えたので、該当する記述を全部最新化して", "should_trigger": true},
+  {"query": "docs/runbook/deploy.md の手順書に、ロールバックの手順を追記して", "should_trigger": true},
+  {"query": "v2.3 のリリースノートを、利用者に影響がある変更から順に書いて", "should_trigger": true},
+  {"query": "今の変更内容でコミットメッセージを書いて", "should_trigger": true},
+  {"query": "この PR の説明文、追加した commit の内容が反映されていないので、今の差分に合わせて書き直して", "should_trigger": true},
+  {"query": "このリポジトリの CLAUDE.md が長くて重複も多い。エージェントが従いやすいように推敲して", "should_trigger": true},
+  {"query": "src/queue/worker.ts のコメントが経緯の説明ばかりなので、残すべきものだけに整理して", "should_trigger": true},
   {"query": "今日の調査で分かった知見を、自分用の wiki に残しておいて", "should_trigger": false},
   {"query": "このメールの文面、AI っぽいので自然な日本語に直して", "should_trigger": false},
   {"query": "社外向けの技術ブログに、ジョブキュー移行の体験記を書いて", "should_trigger": false},
   {"query": "src/queue/worker.ts の重複している処理をリファクタして", "should_trigger": false},
   {"query": "この設計書を英語に翻訳して", "should_trigger": false},
-  {"query": "今の変更内容でコミットメッセージを書いて", "should_trigger": false},
-  {"query": "この関数がなぜ遅いのか調べて原因を教えて", "should_trigger": false}
+  {"query": "この関数がなぜ遅いのか調べて原因を教えて", "should_trigger": false},
+  {"query": "今の変更をコミットして push して", "should_trigger": false},
+  {"query": "このブランチで PR を作って", "should_trigger": false}
 ]
