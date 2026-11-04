@@ -45,3 +45,6 @@ jobs:
 
       - name: git-hooks のテスト
         run: bash tests/git-hooks.test.sh
+
+      - name: dev-docs の構造テスト
+        run: bash tests/dev-docs.test.sh

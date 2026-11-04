@@ -15,9 +15,7 @@ nesheep5 の自作 Claude Code プラグイン集（plugin marketplace）。
 
 ## プラグイン一覧
 
-| プラグイン | 中身 |
-|---|---|
-| `dev-docs` | Brief・PRD・DesignDoc・開発スケジュール・検討資料を、文書間の連鎖を保って作成・レビューする。土台の文章術（tech-writing）を含む |
+- `dev-docs`: 開発にまつわる文書（設計書・要件・調査資料・打ち合わせ資料・依頼書など）の作成・修正・レビューを、読者と目次の合意から始めて支援する。共通ルールに利用者・プロジェクトのローカルルールを重ね、指摘を受けるほど好みに沿う。詳しくは [plugins/dev-docs/README.md](plugins/dev-docs/README.md)
 
 ## 構成
 
@@ -26,7 +24,8 @@ nesheep5 の自作 Claude Code プラグイン集（plugin marketplace）。
       .claude-plugin/plugin.json
       skills/<name>/SKILL.md
     git-hooks/                         公開前の検査（pre-commit・pre-push）
-    tests/                             validate.sh・git-hooks.test.sh
+    tests/                             validate.sh・git-hooks.test.sh・dev-docs.test.sh
+    docs/specs/  docs/plans/           設計書と実装計画
     .github/workflows/ci.yml           push と PR で tests/ を走らせる
 
 ## 開発
@@ -38,7 +37,7 @@ claude plugin marketplace add <このリポジトリのパス>
 ```
 
 - 編集は次のセッションか `/reload-plugins` で反映される。ローカルのパスで登録したマーケットプレイスは cache に複製せず元の場所から読むため、version を上げる必要は無い
-- 変更後は `bash tests/validate.sh` と `bash tests/git-hooks.test.sh` を通す
+- 変更後は `bash tests/validate.sh`・`bash tests/git-hooks.test.sh`・`bash tests/dev-docs.test.sh` を通す
 
 ## 公開前の検査
 

@@ -1,16 +1,16 @@
 {
   "name": "dev-docs",
-  "version": "0.2.0",
-  "description": "Brief・PRD・DesignDoc・開発スケジュール・技術調査資料を、文書間の連鎖を保って作成・レビューする開発ドキュメント作成プラグイン",
+  "version": "0.3.0",
+  "description": "開発にまつわる文書の作成・修正・レビューを、読者と目次の合意から始めて支援する。共通ルールに利用者・プロジェクトのローカルルールを重ね、指摘を受けるほど好みに沿う",
   "author": {
     "name": "nesheep5"
   },
   "license": "MIT",
   "userConfig": {
-    "org_templates_dir": {
+    "local_rules_dir": {
       "type": "directory",
-      "title": "組織テンプレートの置き場",
-      "description": "組織指定の文書テンプレート（<skill>.md）と記載ガイド（<skill>.guide.md）を置いたディレクトリ。空のままなら各スキルの一般構成で書く"
+      "title": "ローカルルールの置き場",
+      "description": "好み（style.md）・用語集（glossary.md）・会社テンプレート（templates/）を置くディレクトリ。空なら plugin のデータディレクトリを使う（アンインストールで消える）"
     }
   }
 }
