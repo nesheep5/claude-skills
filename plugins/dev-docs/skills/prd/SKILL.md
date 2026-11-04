@@ -14,7 +14,7 @@ PRD はユーザーに提供する機能の要件を、PdM とエンジニアが
 3. **執筆**: 下の構成で書く。`/dev-docs:tech-writing` の原則に従う
 4. **下流チェック**: `${CLAUDE_PLUGIN_ROOT}/references/doc-chain.md` の「PRD → DesignDoc」「PRD + DesignDoc → 開発スケジュール」行を見て、引き渡し情報が具体的に書かれているか確認する。欠けは「未決事項」に落とす。**既存 PRD のレビューを頼まれたときはこの段階だけ回し、「どの節に何が無く、DesignDoc のどこが書けなくなるか」を伝える**
 5. **自己レビュー**: `/dev-docs:tech-writing` の3パス
-6. **フィードバック**: ユーザーの指摘がスキルの不備なら `skill-improve` スキルに従って記録する（`skill: "dev-docs:prd"`）
+6. **フィードバック**: ユーザーの指摘がスキルの不備なら、`skill-improve` スキルがあればそれに従って記録する（`skill: "dev-docs:prd"`）
 
 ## 前提質問
 

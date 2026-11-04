@@ -23,7 +23,7 @@ Brief ──▶ PRD ──▶ DesignDoc ──▶ 開発スケジュール
 
 ## 改善ループ
 
-生成文書への指摘のうちスキルの不備に起因するものは `skill-improve` スキルで記録・反映する（dev-docs 専用ではなく全スキル共通）。ログは `~/.claude/skill-feedback/log.jsonl`（ローカル専用・非コミット）、`skill` は `dev-docs:<name>` 形式で記録する。
+生成文書への指摘のうちスキルの不備に起因するものは `skill-improve` スキル（別配布。入っていれば）で記録・反映する（dev-docs 専用ではなく全スキル共通）。ログは `~/.claude/skill-feedback/log.jsonl`（ローカル専用・非コミット）、`skill` は `dev-docs:<name>` 形式で記録する。
 
 ## 会社テンプレートの取り込み
 

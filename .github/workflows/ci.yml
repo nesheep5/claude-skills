@@ -45,6 +45,3 @@ jobs:
 
       - name: git-hooks のテスト
         run: bash tests/git-hooks.test.sh
-
-      - name: prompt-eval のテスト
-        run: python3 -m unittest discover -s plugins/personal/skills/prompt-eval/tests

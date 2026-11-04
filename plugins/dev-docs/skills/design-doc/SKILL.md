@@ -14,7 +14,7 @@ DesignDoc は PRD の要件をどう実装するかを、エンジニア間お�
 3. **執筆**: 下の構成で書く。`/dev-docs:tech-writing` の原則に従う。複数案の比較が必要になったら `/dev-docs:tech-research-doc` の評価表の形式（全案共通の行順）を使う
 4. **下流チェック**: `${CLAUDE_PLUGIN_ROOT}/references/doc-chain.md` の「PRD + DesignDoc → 開発スケジュール」行を見て、コンポーネント分割と依存関係が具体的に書かれているか確認する。あわせて PRD の機能要件（Must）がすべてどこかのコンポーネントで扱われているか対応を確認し、扱われていない要求は「未決事項」に落とす。**既存 DesignDoc のレビューを頼まれたときはこの段階だけ回す**
 5. **自己レビュー**: `/dev-docs:tech-writing` の3パス
-6. **フィードバック**: ユーザーの指摘がスキルの不備なら `skill-improve` スキルに従って記録する（`skill: "dev-docs:design-doc"`）
+6. **フィードバック**: ユーザーの指摘がスキルの不備なら、`skill-improve` スキルがあればそれに従って記録する（`skill: "dev-docs:design-doc"`）
 
 ## 前提質問
 

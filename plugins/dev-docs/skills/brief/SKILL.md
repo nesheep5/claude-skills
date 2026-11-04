@@ -14,7 +14,7 @@ Brief は「この施策をなぜやるのか」に PdM とエンジニアが合
 3. **執筆**: 下の構成で書く。`/dev-docs:tech-writing` の原則に従う
 4. **下流チェック**: `${CLAUDE_PLUGIN_ROOT}/references/doc-chain.md` の「Brief → PRD」行を見て、引き渡し情報が具体的に書かれているか確認する。欠けは「未決事項」に落とす。**既存 Brief のレビューを頼まれたときはこの段階だけ回す**
 5. **自己レビュー**: `/dev-docs:tech-writing` の3パス（構成 / 冗長 / AI臭）
-6. **フィードバック**: ユーザーの指摘がスキルの不備なら `skill-improve` スキルに従って記録する（`skill: "dev-docs:brief"`）
+6. **フィードバック**: ユーザーの指摘がスキルの不備なら、`skill-improve` スキルがあればそれに従って記録する（`skill: "dev-docs:brief"`）
 
 ## 前提質問
 
