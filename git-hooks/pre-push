@@ -17,10 +17,13 @@ noreply='^[0-9]+\+[^@]+@users\.noreply\.github\.com$'
 z=0000000000000000000000000000000000000000
 while read -r lref lsha rref rsha; do
   [ "$lsha" = "$z" ] && continue
-  # push 先の sha が手元に無い（fetch していない force push など）ときは、push するものの履歴全体を検査する
-  if [ "$rsha" = "$z" ] || ! git cat-file -e "$rsha^{commit}" 2>/dev/null; then range="$lsha"; else range="$rsha..$lsha"; fi
+  # 新しいブランチや、push 先の sha が手元に無い（fetch していない force push など）ときは、
+  # どのリモートにもまだ無いコミットをすべて検査する。リモートにあるものは公開済みで、
+  # GitHub 上のマージで作られたコミット（committer が noreply@github.com）もここに入る
+  if [ "$rsha" = "$z" ] || ! git cat-file -e "$rsha^{commit}" 2>/dev/null; then range="$lsha --not --remotes"; else range="$rsha..$lsha"; fi
+  read -ra range_args <<<"$range"
   gitleaks git --log-opts="$range" --no-banner --redact -l warn >/dev/null 2>&1 || fail "gitleaks が検出した（$range）"
-  log=$(git log --format='%h %ae %ce' "$range") || fail "git log が失敗した（$range）"
+  log=$(git log --format='%h %ae %ce' "${range_args[@]}") || fail "git log が失敗した（$range）"
   # awk -v はバックスラッシュを解釈してしまうので、正規表現は環境変数で渡す
   bad=$(printf '%s\n' "$log" | RE="$noreply" awk 'NF && ($2 !~ ENVIRON["RE"] || $3 !~ ENVIRON["RE"])')
   [ -z "$bad" ] || fail "author か committer が noreply アドレスでないコミットがある:\n$bad"

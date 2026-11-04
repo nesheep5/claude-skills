@@ -70,6 +70,22 @@ check fail "$(pp)" "pre-push: ID の無い noreply の author は止める"
 G -c user.email=x@users.noreply.github.com commit -q --amend -m "add a" --author "$NOREPLY"; review
 check fail "$(pp)" "pre-push: ID の無い noreply の committer は止める"
 
+# 新しいブランチの push では、リモートに既にあるコミットを検査し直さない。
+# GitHub 上のマージで作られたコミットは committer が noreply@github.com になるが、公開済み
+G commit -q --amend -m "add a" --author "$NOREPLY"
+G -c user.email=noreply@github.com commit -q --allow-empty -m "merge on github"
+G update-ref refs/remotes/origin/main HEAD
+echo "c" > "$T/r/c.md"; G add c.md; G commit -q -m "add c"; review
+check pass "$(pp)" "pre-push: 新しいブランチではリモートにあるコミットを検査しない"
+G -c user.email=real@example.com commit -q --amend -m "add c"; review
+check fail "$(pp)" "pre-push: 新しいブランチでもリモートに無いコミットは検査する"
+# 偽のトークン。テストファイル自体が gitleaks に掛からないよう、実行時に組み立てる
+printf 'token = %s%s\n' "ghp_" "FAKEtokenFORtestONLY0123456789abcdef" > "$T/r/c.md"
+G add c.md; G commit -q --amend -m "add c" --author "$NOREPLY"; review
+check fail "$(pp)" "pre-push: 新しいブランチでもリモートに無いコミットは gitleaks に掛ける"
+G update-ref -d refs/remotes/origin/main
+G reset -q --hard HEAD~2
+
 # worktree から push しても、メインの .git/publish-review の記録を見つける
 G commit -q --amend -m "add a" --author "$NOREPLY"
 G worktree add -q --detach "$T/wt" HEAD
