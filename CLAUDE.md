@@ -43,5 +43,6 @@ git config user.email <GitHub の noreply アドレス>
 
 - 1 ディレクトリ = 1 プラグイン（`plugins/<name>/`）。`marketplace.json` のソースは `./plugins/<name>` の相対パスで書く
 - 作者のマシンでは、クローンをローカルのパスでマーケットプレイスとして登録し、元の場所から読ませる。GitHub の形で登録すると cache に複製され、編集が反映されない
-- 変更後は `bash tests/validate.sh`（`claude plugin validate`）と `bash tests/git-hooks.test.sh` を通す
+- 設計書は `docs/specs/YYYY-MM-DD-<テーマ>-design.md`、実装計画は `docs/plans/YYYY-MM-DD-<テーマ>.md` に置き、公開する。リポジトリの外や作業用のディレクトリには置かない
+- 変更後は `bash tests/validate.sh`（`claude plugin validate`）・`bash tests/git-hooks.test.sh`・`bash tests/dev-docs.test.sh` を通す
 - push は公開と同じ意味なので、毎回ユーザーに確認する

@@ -1,0 +1,23 @@
+[
+  {"query": "通知の配信をジョブキューに移す実装方針を、チームでレビューできる DesignDoc にまとめて", "should_trigger": true},
+  {"query": "CSV 一括インポート機能の PRD を書きたい。機能要件と受け入れ条件まで入れて", "should_trigger": true},
+  {"query": "新しい検索機能をなぜやるのか、課題と成功指標とやらないことを 1〜2 ページの Brief にして", "should_trigger": true},
+  {"query": "決済画面の改修を 3 か月で出したい。フェーズ分けとマイルストーンを開発スケジュールの資料にして", "should_trigger": true},
+  {"query": "ジョブキューのライブラリを 3 つ調べた結果を、チームが採用を決められる検討資料にまとめて", "should_trigger": true},
+  {"query": "来週、外部のベンダーと API 連携の仕様をすり合わせる。打ち合わせの叩き台を作って", "should_trigger": true},
+  {"query": "ベンダーとの打ち合わせで確認したいことがいくつかある。相手に聞く質問事項を、なぜ聞くかと一緒に整理した資料にして", "should_trigger": true},
+  {"query": "隣のチームのメンバーに、ログ基盤の移行可否の調査をお願いしたい。依頼書を書いて", "should_trigger": true},
+  {"query": "docs/design/cache.md の設計書、後半を読まないと前半が分からない。構成を読みやすく直して", "should_trigger": true},
+  {"query": "この PRD をレビューして、DesignDoc を書くのに足りない情報を指摘して", "should_trigger": true},
+  {"query": "docs/adr/0003-queue.md の ADR を推敲して、冗長なところを削って", "should_trigger": true},
+  {"query": "このリポジトリの README が古くて、何をするツールか伝わらない。書き直して", "should_trigger": true},
+  {"query": "スパイクで分かったことを、PdM が判断できる調査資料にまとめたい", "should_trigger": true},
+  {"query": "障害対応の手順書を、新しく入ったメンバーが読んでも迷わないように作って", "should_trigger": true},
+  {"query": "今日の調査で分かった知見を、自分用の wiki に残しておいて", "should_trigger": false},
+  {"query": "このメールの文面、AI っぽいので自然な日本語に直して", "should_trigger": false},
+  {"query": "社外向けの技術ブログに、ジョブキュー移行の体験記を書いて", "should_trigger": false},
+  {"query": "src/queue/worker.ts の重複している処理をリファクタして", "should_trigger": false},
+  {"query": "この設計書を英語に翻訳して", "should_trigger": false},
+  {"query": "今の変更内容でコミットメッセージを書いて", "should_trigger": false},
+  {"query": "この関数がなぜ遅いのか調べて原因を教えて", "should_trigger": false}
+]
