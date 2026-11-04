@@ -1,0 +1,26 @@
+[
+  {
+    "query": "PRD の要求を段階的にリリースしたい。フェーズ分けとマイルストーンを決めて",
+    "should_trigger": true
+  },
+  {
+    "query": "開発期間を見積もってスケジュールを引いて",
+    "should_trigger": true
+  },
+  {
+    "query": "リリース計画をまとめた資料を作りたい",
+    "should_trigger": true
+  },
+  {
+    "query": "Jira のタイムラインを作ってふりかえりに使いたい",
+    "should_trigger": false
+  },
+  {
+    "query": "今期の目標を立てたい",
+    "should_trigger": false
+  },
+  {
+    "query": "DesignDoc を書いて",
+    "should_trigger": false
+  }
+]

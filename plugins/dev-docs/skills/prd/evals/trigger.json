@@ -1,0 +1,26 @@
+[
+  {
+    "query": "一覧画面の CSV エクスポート機能の要件定義書を作りたい",
+    "should_trigger": true
+  },
+  {
+    "query": "PdM の PRD に DesignDoc を書くための情報が揃っているか点検して",
+    "should_trigger": true
+  },
+  {
+    "query": "機能要件と非機能要件を整理して PRD にまとめて",
+    "should_trigger": true
+  },
+  {
+    "query": "この施策をなぜやるかを 1 ページでまとめて",
+    "should_trigger": false
+  },
+  {
+    "query": "PRD をもとに実装方針の DesignDoc を書いて",
+    "should_trigger": false
+  },
+  {
+    "query": "PRD の要求をフェーズ分けしてスケジュールを引いて",
+    "should_trigger": false
+  }
+]

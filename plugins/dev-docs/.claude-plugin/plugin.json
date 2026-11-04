@@ -1,9 +1,16 @@
 {
   "name": "dev-docs",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Brief・PRD・DesignDoc・開発スケジュール・技術調査資料を、文書間の連鎖を保って作成・レビューする開発ドキュメント作成プラグイン",
   "author": {
     "name": "nesheep5"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "userConfig": {
+    "org_templates_dir": {
+      "type": "directory",
+      "title": "組織テンプレートの置き場",
+      "description": "組織指定の文書テンプレート（<skill>.md）と記載ガイド（<skill>.guide.md）を置いたディレクトリ。空のままなら各スキルの一般構成で書く"
+    }
+  }
 }

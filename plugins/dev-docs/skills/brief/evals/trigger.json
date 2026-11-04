@@ -1,0 +1,26 @@
+[
+  {
+    "query": "新しい通知機能の施策を始める前に、なぜやるかを 1〜2 ページでまとめたい",
+    "should_trigger": true
+  },
+  {
+    "query": "企画の背景と成功指標とやらないことを整理した Brief を書いて",
+    "should_trigger": true
+  },
+  {
+    "query": "PdM が書いた Brief を確認して、足りないところを指摘して",
+    "should_trigger": true
+  },
+  {
+    "query": "機能要件を詳細に詰めた PRD を書いて",
+    "should_trigger": false
+  },
+  {
+    "query": "実装方針をまとめた設計書を作って",
+    "should_trigger": false
+  },
+  {
+    "query": "ライブラリ A と B のどちらを採用すべきか比較資料を作って",
+    "should_trigger": false
+  }
+]
