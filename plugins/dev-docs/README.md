@@ -1,6 +1,6 @@
 # dev-docs
 
-開発にまつわる文書（設計書・要件・調査資料・打ち合わせ資料・依頼書など）を書き、直し、レビューする Claude Code プラグイン。スキルは `/dev-docs:doc` の 1 つで、書く前に読者と目次を利用者と合意してから本文に進む。書き方の指摘を受けると利用者のローカルルールに取り込み、次の文書から反映する。
+開発にまつわる文書（設計書・要件・調査資料・打ち合わせ資料・依頼書など）を書き、更新し、推敲し、レビューする Claude Code プラグイン。commit message や PR 説明のような、コードの変更に付く短い文書も扱う。スキルは `/dev-docs:write` の 1 つで、新規作成と大きな改稿では、書く前に読者と目次を利用者と合意してから本文に進む。書き方の指摘を受けると利用者のローカルルールに取り込み、次の文書から反映する。
 
 ```
 /plugin install dev-docs --marketplace nesheep5/claude-skills
@@ -18,7 +18,9 @@
 - 打ち合わせ資料（`meeting`）: 打ち合わせで何を決め、何を聞くか
 - 依頼書（`request`）: 誰に何をどの状態まで頼むか
 
-README・ADR・手順書のように、どの種別にも当たらない文書は、共通ルール（すべての文書に当てる書き方の規則）と合意だけで書く。
+README・ADR・手順書・仕様書・リリースノートのように、どの種別にも当たらない文書は、共通ルール（すべての文書に当てる書き方の規則）と合意だけで書く。
+
+commit message・PR 説明・エージェント向けの指示（CLAUDE.md・SKILL.md など）・コードコメントは付随文書として扱い、リポジトリの規約に合わせて軽い流れで書く（`references/attached-text.md`）。
 
 依頼の例:
 
@@ -27,6 +29,8 @@ README・ADR・手順書のように、どの種別にも当たらない文書�
 - 「明日の打ち合わせで先方に聞くことをまとめて」
 - 「この PRD をレビューして。DesignDoc を書くのに足りない情報を挙げて」
 - 「この README が読みづらいので直して」
+- 「TTL を変えたので、設計書の該当する記述を最新化して」
+- 「今の変更内容で commit message を書いて」
 
 ## インストール
 
@@ -53,13 +57,14 @@ Claude Code 2.1.275 以降なら、セッションの中で次の 1 行を実行
 
 ## 使い方
 
-`/dev-docs:doc` に続けて依頼を書く。明示しなくても、文書の作成・修正・レビューを頼めば呼ばれる。
+`/dev-docs:write` に続けて依頼を書く。明示しなくても、文書の作成・修正・レビューを頼めば呼ばれる。
 
 依頼の種類によって、途中で起きることが変わる。
 
 - 新規作成と大きな改稿（見出しの構成か順序が変わる直し）: 本文を書く前に、読者と目的・答える問い・目次・用語の 4 つを示し、了承を待つ。目次は種別のたたき台から始め、その文書の論旨に合わせて組み替える
 - 小さな修正: 合意を省き、頼まれた箇所だけを直す。ほかの箇所で見つけた問題は直さず、返答で指摘する
 - レビュー: 文書を書き換えず、どこが・なぜ問題で・どう直すかを返す
+- 付随文書: 合意・調査記録・次の文書へのチェックを省く。先にリポジトリの規約（PR テンプレート、`git log` の書きぶり、CLAUDE.md など）を読み、書いた内容を差分やコードと突き合わせる
 
 調べることがあれば、書く前に一次情報に当たり、結果を調査記録に残す。調査記録は、調べた事実と出典を文書とは別に持つファイルで、文書はここから書き起こす。表現の直しを重ねても、調べた内容が薄まらないようにするためだ。表現だけの修正なら、調べ直さず調査記録にも触れない。
 
@@ -127,6 +132,7 @@ Claude Code 2.1.275 以降なら、セッションの中で次の 1 行を実行
 - 個人用ナレッジやメモへの記録
 - 文の自然さ（語感・AI っぽさ）だけの手直し
 - 社外向けの技術記事・ブログ。導入から入る読み物の構成が正当な文書で、dev-docs の規則と衝突する
+- コミットや PR 作成のような操作そのもの。文面を書く・直す依頼でだけ呼ばれる
 
 ## 更新
 
@@ -136,9 +142,14 @@ Claude Code 2.1.275 以降なら、セッションの中で次の 1 行を実行
 claude plugin update dev-docs@nesheep5
 ```
 
+### 0.4 からの移行
+
+- スキル名を `doc` から `write` に変えた。`/dev-docs:doc` では呼べないので、`/dev-docs:write` で呼ぶ
+- 既存の文書の更新・追記と、付随文書（commit message・PR 説明・エージェント向けの指示・コードコメント）の文面でも呼ばれるようにした
+
 ### 0.2 からの移行
 
-- 0.2 の 6 スキル（`brief` / `prd` / `design-doc` / `dev-schedule` / `tech-research-doc` / `tech-writing`）は `doc` 1 つにまとめた。旧スキルの名前では呼べない
+- 0.2 の 6 スキル（`brief` / `prd` / `design-doc` / `dev-schedule` / `tech-research-doc` / `tech-writing`）は 1 つにまとめた（今の `write`）。旧スキルの名前では呼べない
 - 設定 `org_templates_dir` は `local_rules_dir` に置き換えた。新しい設定にディレクトリを指定し、旧ディレクトリの `<種別>.md` と `<種別>.guide.md` をその下の `templates/` に移す
 - `tech-research-doc` 向けのテンプレートは `templates/research.md` に名前を変える
 
@@ -152,17 +163,17 @@ claude plugin update dev-docs@nesheep5
 
 取り込んだ直後なら「それは今回だけ」と言う。後からなら、利用者のローカルの `style.md` や `glossary.md` から該当する項目を消す。
 
-### 0.2 のスキル名で呼べない
+### 古いスキル名で呼べない
 
-0.3 で `/dev-docs:doc` の 1 つにまとめた。`/dev-docs:doc` で呼ぶか、スキル名を付けずにそのまま依頼する。
+0.2 の 6 スキルは 0.3 で 1 つにまとめ、0.5 で名前を `doc` から `write` に変えた。`/dev-docs:write` で呼ぶか、スキル名を付けずにそのまま依頼する。
 
 ## 保守
 
 作者向けの情報。
 
-- 共通ルールの正本は `references/writing.md`。自己レビューのパス（`references/review.md`）は、その見出しの名前で参照している
-- 種別を足すときは、`references/types/<種別の id>.md`、`references/doc-chain.md`、`skills/doc/SKILL.md` の種別の一覧、`skills/doc/evals/trigger.json` を同時に直す
+- 共通ルールの正本は `references/writing.md`。付随文書の規則は `references/attached-text.md` にあり、共通ルールのうち文のレベルのものだけを当てる。自己レビューのパス（`references/review.md`）は、その見出しの名前で参照している
+- 種別を足すときは、`references/types/<種別の id>.md`、`references/doc-chain.md`、`skills/write/SKILL.md` の種別の一覧、`skills/write/evals/trigger.json` を同時に直す
 - references の中の `${...}` は展開されない。展開されるのはスキル本文だけなので、ローカルの置き場の実際の値は SKILL.md の「置き場の解決」で渡している
 - プラグイン本体は、他のスキルを名前で参照しない。公開しているプラグインから、利用者の手元にしかないスキルへの依存を作らないため。手元のスキルの側から dev-docs を名指しするのはよい（例: 個人用 wiki のスキルの説明に「他人に渡す資料は dev-docs を使う」と書く）
-- 評価ケースは `skills/doc/evals/`。`trigger.json` は発火（`query` と `should_trigger`）、`results.json` は振る舞い（`prompt` と `checks`）。description を変えたら発火を確かめ直す。例文に業務固有の語を入れない
+- 評価ケースは `skills/write/evals/`。`trigger.json` は発火（`query` と `should_trigger`）、`results.json` は振る舞い（`prompt` と `checks`）。description を変えたら発火を確かめ直す。例文に業務固有の語を入れない
 - 形のテストは `bash tests/dev-docs.test.sh`

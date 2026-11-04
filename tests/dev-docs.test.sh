@@ -35,16 +35,16 @@ def rel(path):
 
 TYPES = ["brief", "prd", "design-doc", "dev-schedule", "research", "meeting", "request"]
 
-# skills/ 直下は doc だけ
+# skills/ 直下は write だけ
 skills_dir = os.path.join(plugin, "skills")
 found = sorted(d for d in os.listdir(skills_dir) if os.path.isdir(os.path.join(skills_dir, d)))
-report("skills/", [] if found == ["doc"] else [f"doc だけのはずが {found}"])
+report("skills/", [] if found == ["write"] else [f"write だけのはずが {found}"])
 
 # manifest
 problems = []
 manifest = json.load(open(os.path.join(plugin, ".claude-plugin", "plugin.json"), encoding="utf-8"))
-if manifest.get("version") != "0.4.0":
-    problems.append(f"version が 0.4.0 でない: {manifest.get('version')}")
+if manifest.get("version") != "0.5.0":
+    problems.append(f"version が 0.5.0 でない: {manifest.get('version')}")
 uc = manifest.get("userConfig", {})
 if set(uc) != {"local_rules_dir"}:
     problems.append(f"userConfig のキーが local_rules_dir だけでない: {sorted(uc)}")
@@ -109,13 +109,27 @@ for root in [plugin, os.path.join(repo, "docs")]:
 report("local-paths", problems)
 
 # 依頼の見極めの基準と、小さな修正での自己レビューの範囲が書かれている
-skill_text = read(os.path.join(skills_dir, "doc", "SKILL.md"))
+skill_text = read(os.path.join(skills_dir, "write", "SKILL.md"))
 problems = []
 if "見出しの構成か順序が変わるなら大きな改稿" not in skill_text:
     problems.append("大きな改稿と小さな修正を分ける基準が無い")
 if "直した箇所にだけ" not in skill_text:
     problems.append("小さな修正での自己レビューの範囲が無い")
 report("request-scope", problems)
+
+# 付随文書は別の流れで扱い、4 種類それぞれの節がある
+problems = []
+if "references/attached-text.md" not in skill_text:
+    problems.append("SKILL.md が付随文書の reference を参照していない")
+attached = os.path.join(plugin, "references", "attached-text.md")
+if os.path.isfile(attached):
+    heads = set(re.findall(r"^## (.+?)\s*$", read(attached), re.M))
+    for h in ["流れ", "commit message", "PR 説明", "エージェント向けの指示", "コードコメント"]:
+        if h not in heads:
+            problems.append(f"attached-text.md に「## {h}」が無い")
+else:
+    problems.append("attached-text.md が無い")
+report("attached-text", problems)
 
 # 種別の reference
 problems = []
@@ -131,7 +145,7 @@ for t in TYPES:
 report("types", problems)
 
 def load_cases(name):
-    path = os.path.join(skills_dir, "doc", "evals", name)
+    path = os.path.join(skills_dir, "write", "evals", name)
     if not os.path.isfile(path):
         return None, [f"{rel(path)} が無い"]
     try:
