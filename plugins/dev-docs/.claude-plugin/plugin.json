@@ -5,6 +5,8 @@
   "author": {
     "name": "nesheep5"
   },
+  "homepage": "https://github.com/nesheep5/dev-docs",
+  "repository": "https://github.com/nesheep5/dev-docs",
   "license": "MIT",
   "userConfig": {
     "local_rules_dir": {

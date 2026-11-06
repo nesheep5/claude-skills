@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## このリポジトリの性質
 
-**公開**リポジトリ。nesheep5 の自作 Claude Code プラグインのマーケットプレイス（name: `nesheep5`）。
+**公開**リポジトリ。Claude Code プラグイン dev-docs だけを載せる単独リポジトリで、リポジトリ自身がマーケットプレイス（name: `dev-docs`）を兼ねる。別のスキルはこのリポジトリに足さず、別のリポジトリで作る。
 
 ## 書いてはいけないもの
 
@@ -41,7 +41,7 @@ git config user.email <GitHub の noreply アドレス>
 
 ## 開発
 
-- 1 ディレクトリ = 1 プラグイン（`plugins/<name>/`）。`marketplace.json` のソースは `./plugins/<name>` の相対パスで書く
+- プラグイン本体は `plugins/dev-docs/` に置き、`marketplace.json` のソースは `./plugins/dev-docs` と書く。ルートに上げると、tests・docs・git-hooks まで利用者の環境に複製される
 - 作者のマシンでは、クローンをローカルのパスでマーケットプレイスとして登録し、元の場所から読ませる。GitHub の形で登録すると cache に複製され、編集が反映されない
 - 設計書は `docs/specs/YYYY-MM-DD-<テーマ>-design.md`、実装計画は `docs/plans/YYYY-MM-DD-<テーマ>.md` に置き、公開する。リポジトリの外や作業用のディレクトリには置かない
 - 変更後は `bash tests/validate.sh`（`claude plugin validate`）・`bash tests/git-hooks.test.sh`・`bash tests/dev-docs.test.sh` を通す
