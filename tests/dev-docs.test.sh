@@ -43,8 +43,8 @@ report("skills/", [] if found == ["write"] else [f"write だけのはずが {fou
 # manifest
 problems = []
 manifest = json.load(open(os.path.join(plugin, ".claude-plugin", "plugin.json"), encoding="utf-8"))
-if manifest.get("version") != "0.5.0":
-    problems.append(f"version が 0.5.0 でない: {manifest.get('version')}")
+if manifest.get("version") != "0.6.0":
+    problems.append(f"version が 0.6.0 でない: {manifest.get('version')}")
 uc = manifest.get("userConfig", {})
 if set(uc) != {"local_rules_dir"}:
     problems.append(f"userConfig のキーが local_rules_dir だけでない: {sorted(uc)}")
