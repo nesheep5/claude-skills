@@ -1,10 +1,10 @@
 {
-  "name": "nesheep5",
+  "name": "dev-docs",
   "owner": {
     "name": "nesheep5"
   },
   "metadata": {
-    "description": "nesheep5 の自作 Claude Code プラグイン集"
+    "description": "設計書・仕様書・調査資料など、開発の文書の作成を支援する Claude Code プラグイン dev-docs"
   },
   "plugins": [
     {
